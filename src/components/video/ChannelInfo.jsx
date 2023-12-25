@@ -1,8 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
 import React from 'react';
-import { youtubeApiJotai } from '../../atom/api/atom.js';
 import styled from '@emotion/styled';
+
+import useChannelInfo from '../../hooks/videos/useChannelInfo.js';
 
 const Base = styled.div`
   display: flex;
@@ -24,16 +23,13 @@ const ChannelName = styled.span`
   line-height: 1;
 `;
 
+/**
+ * 채널 정보 컴포넌트
+ * @property {string} id channelId
+ * @property {string} channelTitle channelTitle
+ */
 export default function ChannelInfo({ id, channelTitle }) {
-  const youtubeApi = useAtomValue(youtubeApiJotai);
-  const {
-    isLoading,
-    error,
-    data: url,
-  } = useQuery({
-    queryKey: ['channel', id],
-    queryFn: () => youtubeApi.channelImageURL(id),
-  });
+  const { data: url } = useChannelInfo(id);
 
   return (
     <Base>

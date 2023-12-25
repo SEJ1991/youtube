@@ -1,8 +1,9 @@
-import styled from '@emotion/styled';
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import styled from '@emotion/styled';
+
 import RelatedVideos from '../components/video/RelatedVideos';
 import ChannelInfo from '../components/video/ChannelInfo';
+import useVideoDetail from '../hooks/videos/useVideoDetail';
 
 const Base = styled.div`
   display: grid;
@@ -55,14 +56,11 @@ const Description = styled.pre`
   white-space: pre-wrap;
 `;
 
+/**
+ * 비디오 디테일 페이지 컴포넌트
+ */
 export default function VideoDetail() {
-  const { id } = useParams();
-  const {
-    state: { statistics, snippet },
-  } = useLocation();
-
-  const { title, description, channelId } = snippet;
-  // const { viewCount } = statistics;
+  const { id, title, description, channelId } = useVideoDetail();
   return (
     <Base>
       <Wrapper>

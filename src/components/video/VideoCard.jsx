@@ -1,9 +1,8 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { viewCounter } from '../../libs/common';
-import { formatAgo } from '../../libs/date';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
+
+import useVideoCard from '../../hooks/videos/useVideoCard';
 
 const Base = styled.div`
   ${props =>
@@ -70,22 +69,17 @@ const Text = styled.p`
     `}
 `;
 
+/**
+ * 비디오 카드 컴포넌트
+ * @property {Video} video 비디오 정보
+ * @property {string?} type related or undefined
+ */
 export default function VideoCard({ video: { id, snippet, statistics }, type }) {
-  const navigate = useNavigate();
-
-  const { thumbnails, title, channelTitle, publishedAt } = snippet;
-
-  const count = viewCounter(Number(statistics?.viewCount || 0));
-  const date = formatAgo(publishedAt);
-
-  const onClick = () => {
-    navigate(`/videos/watch/${id}`, {
-      state: { statistics, snippet },
-    });
-  };
+  const { thumbnails, title, channelTitle } = snippet;
+  const { count, date, handleOnClick } = useVideoCard({ id, snippet, statistics });
 
   return (
-    <Base onClick={onClick} type={type}>
+    <Base onClick={handleOnClick} type={type}>
       <Img src={thumbnails.medium.url} alt={title} type={type} />
       <Body>
         <Text needReduce lineClamp={2}>

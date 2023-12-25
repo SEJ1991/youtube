@@ -1,10 +1,9 @@
-import styled from '@emotion/styled';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import styled from '@emotion/styled';
+
 import VideoCard from '../components/video/VideoCard';
-import { youtubeApiJotai } from '../atom/api/atom';
+import useVideos from '../hooks/videos/useVideos';
+import Loading from '../components/common/Loading';
 
 const Base = styled.div`
   display: grid;
@@ -30,24 +29,28 @@ const List = styled.ul`
   }
 `;
 
+/**
+ * 유튜브 비디오 목록 페이지 컴포넌트
+ */
 export default function Videos() {
-  const youtubeApi = useAtomValue(youtubeApiJotai);
+  const { data, isLoading } = useVideos();
 
-  const { keyword } = useParams();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['videos', keyword],
-    queryFn: () => youtubeApi.search(keyword),
-  });
+  if (isLoading) {
+    return (
+      <Base>
+        <Loading />
+      </Base>
+    );
+  }
 
   return (
     <Base>
       <List>
-        {data?.length &&
-          data.map(video => (
-            <li key={video.id}>
-              <VideoCard video={video} />
-            </li>
-          ))}
+        {data?.map(video => (
+          <li key={video.id}>
+            <VideoCard video={video} />
+          </li>
+        ))}
       </List>
     </Base>
   );

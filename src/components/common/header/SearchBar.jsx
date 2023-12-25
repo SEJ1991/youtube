@@ -1,7 +1,8 @@
-import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BsSearch } from 'react-icons/bs';
-import { useNavigate, useParams } from 'react-router-dom';
+import styled from '@emotion/styled';
+
+import useSearchBar from '../../../hooks/common/header/useSearchBar';
 
 const Base = styled.form`
   width: auto;
@@ -42,34 +43,17 @@ const SearchWrapper = styled.button`
   cursor: pointer;
 `;
 
+/**
+ * 공통 헤더 컴포넌트에 종속된 검색바 컴포넌트
+ */
 export default function SearchBar() {
-  const navigate = useNavigate();
-  const { keyword } = useParams();
+  const { value, handleOnSubmit, handleOnChange, handleOnClick } = useSearchBar();
 
-  const [value, setValue] = useState('');
-
-  const onChange = e => {
-    const { value } = e.target;
-    setValue(value);
-  };
-
-  const searching = () => {
-    navigate(`videos/${value}`);
-  };
-
-  const onSubmit = e => {
-    e.preventDefault();
-    searching();
-  };
-
-  useEffect(() => {
-    setValue(keyword || '');
-  }, [keyword]);
   return (
-    <Base onSubmit={onSubmit}>
-      <Input type='text' placeholder='search...' onChange={onChange} value={value} />
+    <Base onSubmit={handleOnSubmit}>
+      <Input type='text' placeholder='search...' onChange={handleOnChange} value={value} />
       <SearchWrapper>
-        <BsSearch size={13} color='#FFF' onClick={searching} />
+        <BsSearch size={13} color='#FFF' onClick={handleOnClick} />
       </SearchWrapper>
     </Base>
   );

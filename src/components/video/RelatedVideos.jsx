@@ -1,10 +1,9 @@
 import React from 'react';
-import { useAtomValue } from 'jotai';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { youtubeApiJotai } from '../../atom/api/atom';
+
 import VideoCard from './VideoCard';
+import useRelatedVideos from '../../hooks/videos/useRelatedVideos';
+import Loading from '../common/Loading';
 
 const Base = styled.section`
   display: flex;
@@ -16,16 +15,25 @@ const Base = styled.section`
   }
 `;
 
+/**
+ * 연관된 비디오 목록 컴포넌트
+ */
 export default function RelatedVideos() {
-  const { keyword } = useParams();
-  const youtubeApi = useAtomValue(youtubeApiJotai);
+  const { data, isLoading } = useRelatedVideos();
 
-  const { data } = useQuery({
-    queryKey: ['search', keyword],
-    queryFn: () => youtubeApi.search(keyword),
-  });
+  if (isLoading) {
+    return (
+      <Base>
+        <Loading />
+      </Base>
+    );
+  }
 
   return (
-    <Base>{data?.length && data.map(video => <VideoCard video={video} type='related' />)}</Base>
+    <Base>
+      {data?.map(video => (
+        <VideoCard key={video.id} video={video} type='related' />
+      ))}
+    </Base>
   );
 }
