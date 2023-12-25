@@ -68,7 +68,7 @@ export default function VideoDetail() {
           <Ifrmae
             id='player'
             type='text/html'
-            src={`http://www.youtube.com/embed/${id}`}
+            src={`https://www.youtube.com/embed/${id}`}
             frameborder='0'
           ></Ifrmae>
           <Title>{title}</Title>
