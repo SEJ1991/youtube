@@ -24,7 +24,8 @@ export default function useSearchBar() {
   };
 
   useEffect(() => {
-    setValue(keyword || '');
+    console.log(keyword);
+    setValue(keyword);
   }, [keyword]);
 
   return {
