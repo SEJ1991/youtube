@@ -1,7 +1,8 @@
-import styled from '@emotion/styled';
 import React from 'react';
 import { BsYoutube } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
+
 import SearchBar from './SearchBar';
 
 const Header = styled.header`
@@ -36,6 +37,9 @@ const Content = styled.div`
   }
 `;
 
+/**
+ * 공통으로 사용될 헤더 컴포넌트
+ */
 export default function SearchHeader() {
   return (
     <Header>
